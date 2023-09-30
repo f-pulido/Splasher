@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    This is the login page! You can't go to ('/home') without being authenticated. Good luck with that while this page is under construction!
+
+    <header>
+        <h1>Splasher</h1>
+    </header>
+
+    <div class="logInContainer">
+        <form action="/login" method="POST">
+            <fieldset>
+                <legend>Login</legend>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required/>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required/>
+
+                <input type="submit" id="logInSubmit" name="logInSubmit" value="Log In"/>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="redirectSignUp">
+        <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+    </div>
+
+
+</body>
+</html>
