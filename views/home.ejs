@@ -8,7 +8,16 @@
     <script src="/js/script.js"></script>
 </head>
 <body>
-    <h1>Hello <%= user.firstName %></h1>
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <li><a href="/profile">Profile</a></li>
+        </ul>
+    </nav>
+
+
+    <h1>Hello <%= user.firstName %>!</h1>
 
     <div id="popUpMessage">
         <% if(typeof(message) != "undefined") {%>

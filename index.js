@@ -38,6 +38,11 @@ app.get('/home', isAuthenticated, (req, res) => {
     res.render('home', { title: "Splasher!", user});
 });
 
+app.get('/profile', isAuthenticated, (req, res) => {
+    const user = req.session.user;
+    res.render('profile', {title: "Splasher! - Profile", user});
+});
+
 app.post('/signup', async (req, res) => {
     // get fields from sign up page
     let username = req.body.username;
