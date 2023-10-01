@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <form action="/create" method="POST">
+        <fieldset>
+            <legend>Create a Puddle</legend>
+            <label for="puddleImagePath">Puddle Image URL:</label>
+            <input type="url" id="puddleImagePath" name="puddleImagePath"/>
+
+            <label for="puddleText">Puddle Text:</label>
+            <textarea id="puddleText" name="puddleText"></textarea>
+
+            <input type="submit" id="puddleSubmit" name="puddleSubmit" value="Create Puddle"/>
+        </fieldset>
+    </form>
+</body>
+</html>

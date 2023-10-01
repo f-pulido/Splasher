@@ -8,14 +8,8 @@
     <script src="/js/script.js"></script>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/home">Home</a></li>
-            <li><a href="/explore">Explore</a></li>
-            <li><a href="/profile">Profile</a></li>
-        </ul>
-    </nav>
 
+    <%- include('partials/nav.ejs') %>
 
     <h1>Hello <%= user.firstName %>!</h1>
 

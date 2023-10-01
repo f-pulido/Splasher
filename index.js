@@ -38,9 +38,50 @@ app.get('/home', isAuthenticated, (req, res) => {
     res.render('home', { title: "Splasher!", user});
 });
 
-app.get('/profile', isAuthenticated, (req, res) => {
+app.get('/profile', isAuthenticated, async (req, res) => {
     const user = req.session.user;
-    res.render('profile', {title: "Splasher! - Profile", user});
+    let userID = user.userID;
+
+    let sql = `SELECT u.username, p.puddleImagePath, p.puddleText, p.timeStamp
+               FROM users u
+               JOIN puddle p USING (userID)
+               WHERE userID = ?
+               GROUP BY u.username, p.puddleText, p.timeStamp
+               ORDER BY p.timeStamp DESC`;
+    let params = [userID];
+    let rows = await executeSQL(sql, params);
+    console.log(rows);
+    res.render('profile', {title: "Splasher! - Profile", user, puddles: rows});
+});
+
+app.get('/create', isAuthenticated, (req, res) => {
+    const user = req.session.user;
+    res.render('create', {title: "Splasher! - Create Puddle", user});
+});
+
+app.post('/create', async (req, res) => {
+    const user = req.session.user;
+    let puddleImagePath = req.body.puddleImagePath;
+    let puddleText = req.body.puddleText;
+    let timeStamp = getCurrentTimestamp();
+    let userID = user.userID;
+
+    console.log(puddleImagePath);
+    console.log(puddleText);
+    console.log(timeStamp);
+    console.log(userID);
+
+    if (!puddleImagePath && !puddleText) {
+        console.log("Can't be empty!");
+        res.render('create');
+    } else {
+        console.log("This is valid.")
+        let sql = `INSERT INTO puddle (puddleImagePath, puddleText, timeStamp, userID)
+                   VALUES (?, ?, ?, ?)`;
+        let params = [puddleImagePath, puddleText, timeStamp, userID];
+        let rows = await executeSQL(sql, params);
+        res.redirect('/profile');
+    }
 });
 
 app.post('/signup', async (req, res) => {
