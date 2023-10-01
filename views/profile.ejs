@@ -1,16 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
+    <link href="/css/">
 </head>
+
 <body>
 
-    <h1>Profile</h1>
+    <%- include('partials/nav.ejs') %>
+        <div class="profileView">
+            <h1>
+                <%= user.username %>
+            </h1>
+            <img src="/images/<%= user.profilePicturePath%>">
+            <p>
+                <%= user.firstName %>
+                    <%= user.lastName %>
+            </p>
 
-    <img src="/images/<%= user.profilePicturePath%>">
-    
+            <a href="/editprofile">Edit profile</a>
+        </div>
+
+        <% for (let i=0; i < puddles.length; i++) { %>
+            <div class="profilePuddles">
+                <img src="<%= puddles[i].puddleImagePath %>" alt="<%= puddles[i].puddleImagePath %>">
+                <p><%= puddles[i].puddleText %></p>
+                <p>Posted on: <%= puddles[i].timeStamp %></p>
+            </div>
+        <% } %>
+
 </body>
+
 </html>
