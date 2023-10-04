@@ -8,33 +8,42 @@
     <title>
         <%= title %>
     </title>
-    <link href="/css/">
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 
 <body>
-
     <%- include('partials/nav.ejs') %>
         <div class="profileView">
             <h1>
                 <%= user.username %>
             </h1>
-            <img src="/images/<%= user.profilePicturePath%>">
-            <p>
-                <%= user.firstName %>
-                    <%= user.lastName %>
-            </p>
 
-            <a href="/editprofile">Edit profile</a>
+            <div class="profileViewPictureStat">
+                <div>
+                    <img src="<%= user.profilePicturePath%>" alt="profilePicturePath">
+                    <p><%= user.firstName %> <%= user.lastName %></p>
+                </div>
+
+                <div class="profileViewStats">
+                    <span class="statsItem"><%= puddles.length %> <b>Posts</b></span>
+                    <span class="statsItem"><%= followers.totalFollowers %> <b>Followers</b></span>
+                    <span class="statsItem"><%=following.totalFollowing%> <b>Following</b></span>
+                </div>
+
+            </div>
+
+            <form action="/editprofile">
+                <input type="submit" id="editProfileSubmit" name="editProfileSubmit" value="Edit Profile">
+            </form>
         </div>
 
         <% for (let i=0; i < puddles.length; i++) { %>
             <div class="profilePuddles">
+                <h2><%= puddles[i].puddleText %></h2>
                 <img src="<%= puddles[i].puddleImagePath %>" alt="<%= puddles[i].puddleImagePath %>">
-                <p><%= puddles[i].puddleText %></p>
-                <p>Posted on: <%= puddles[i].timeStamp %></p>
+                <p>Posted on: <span id="timeStamp"><%= puddles[i].timeStamp %></span></p>
             </div>
-        <% } %>
+            <% } %>
 
 </body>
-
 </html>

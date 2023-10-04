@@ -4,20 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title><% title %></title>
     <link href="/css/style.css" rel="stylesheet">
-    <script src="/js/script.js"></script>
 </head>
 <body>
-
     <%- include('partials/nav.ejs') %>
 
-    <h1>Hello <%= user.firstName %>!</h1>
+    <h1>Results</h1>
 
-    <div id="popUpMessage">
-        <% if(typeof(message) != "undefined") {%>
-            <%= message %>
-        <% } %>
-    </div>
+    <form>
+
+        <% for (let i=0; i < results.length; i++) { %>
+            <div>
+                <%=results[i].username%>
+            </div>
+            <% } %>
+    
+    </form>
 </body>
 </html>

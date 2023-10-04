@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <%- include('partials/nav.ejs') %>
+
+    <form action="/editprofile" method="POST">
+        <fieldset>
+            <legend>Edit Profile</legend>
+
+            <label for="profilePicturePath">Profile Picture URL:</label>
+            <input type="url" id="profilePicturePath" name="profilePicturePath" value="<%= user.profilePicturePath %>"/>
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="<%= user.username %>" />
+
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" value="<%= user.firstName%>" />
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" value="<%= user.lastName%>" />
+
+            <!-- <label for="dateOfBirth">Date of Birth:</label>
+            <input type="datetime" id="dateOfBirth" name="dateOfBirth" value="<%= user.dateOfBirth %>" /> -->
+
+
+            <% if (user.sex=="M" ) { %>
+                <label for="sexM">Male</label>
+                <input type="radio" id="sexM" name="sex" value="M" checked />
+
+                <label for="sexF">Female</label>
+                <input type="radio" id="sexF" name="sex" value="F" />
+
+                <label for="sexNULL">Prefer Not To Say</label>
+                <input type="radio" id="sexNULL" name="sex" value="NULL" />
+            <% } else if (user.sex=="F" ) { %>
+                <label for="sexM">Male</label>
+                <input type="radio" id="sexM" name="sex" value="M" />
+
+                <label for="sexF">Female</label>
+                <input type="radio" id="sexF" name="sex" value="F" checked />
+
+                <label for="sexNULL">Prefer Not To Say</label>
+                <input type="radio" id="sexNULL" name="sex" value="NULL" />
+            <% } else { %>
+                <label for="sexM">Male</label>
+                <input type="radio" id="sexM" name="sex" value="M" />
+
+                <label for="sexF">Female</label>
+                <input type="radio" id="sexF" name="sex" value="F" />
+
+                <label for="sexNULL">Prefer Not To Say</label>
+                <input type="radio" id="sexNULL" name="sex" value="NULL" checked />
+            <% } %>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="<%=user.email%>"/>
+
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" value="<%=user.phoneNumber%>"/>
+
+            <label for="isPublic">Account Privacy:</label>
+            <% if (user.isPublic == 1) { %>
+                <select id="isPublic">
+                    <option value="True" selected>Public</option>
+                    <option value="False">Private</option>
+                </select>
+            <% } else { %>
+                <select id="isPublic">
+                    <option value="True">Public</option>
+                    <option value="False" selected>Private</option>
+                </select>
+            <% } %>
+
+            <input type="submit" id="userUpdateSubmit" name="userUpdateSubmit" value="Update Profile"/>
+        </fieldset>
+    </form>
+</body>
+
+</html>

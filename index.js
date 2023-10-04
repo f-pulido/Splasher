@@ -4,6 +4,7 @@ const mysql = require('mysql');
 const moment = require("moment");
 const bcrypt = require("bcrypt");
 const { time } = require("console");
+const req = require("express/lib/request");
 const saltRounds = 10;
 require("dotenv").config();
 const app = express();
@@ -25,23 +26,28 @@ app.use(express.urlencoded({ extended: true }));
 
 //routes
 app.get('/', (req, res) => {
+    console.log("Now visiting GET route ('/')...");
     res.render('login', { title: 'Splasher! - Log In' })
 });
 
 app.get('/signup', (req, res) => {
+    console.log("Now visiting GET route ('/signup')...");
     res.render('signup', { title: 'Splasher! - Sign Up' })
 });
 
 app.get('/home', isAuthenticated, (req, res) => {
+    console.log("Now visiting GET route ('/home')...");
     const user = req.session.user;
-    console.log(user);
-    res.render('home', { title: "Splasher!", user});
+    console.log("Authenticated user:\n" + user);
+    res.render('home', { title: "Splasher!", user });
 });
 
 app.get('/profile', isAuthenticated, async (req, res) => {
+    console.log("Now visiting GET route ('/profile')...");
     const user = req.session.user;
-    let userID = user.userID;
+    console.log("Authenticated user:\n" + user);
 
+    let userID = user.userID;
     let sql = `SELECT u.username, p.puddleImagePath, p.puddleText, p.timeStamp
                FROM users u
                JOIN puddle p USING (userID)
@@ -50,17 +56,92 @@ app.get('/profile', isAuthenticated, async (req, res) => {
                ORDER BY p.timeStamp DESC`;
     let params = [userID];
     let rows = await executeSQL(sql, params);
-    console.log(rows);
-    res.render('profile', {title: "Splasher! - Profile", user, puddles: rows});
+
+    sql = `SELECT COUNT(f.followsID) AS totalFollowers
+           FROM users u
+           LEFT JOIN follows f ON u.userID = f.followeeID
+           WHERE userID = ?
+           GROUP BY u.username`;
+    let followerRows = await executeSQL(sql, params); 
+
+    sql = `SELECT u.username, COUNT(f.followerID) as totalFollowing
+           FROM users u
+           LEFT JOIN follows f ON u.userID = f.followerID
+           GROUP BY u.username`;
+    let followingRows = await executeSQL(sql, params);
+
+    res.render('profile', { title: "Splasher! - Profile", user, puddles: rows, followers: followerRows[0], following: followingRows[0]});
 });
 
 app.get('/create', isAuthenticated, (req, res) => {
+    console.log("Now visiting GET route ('/create')...");
     const user = req.session.user;
-    res.render('create', {title: "Splasher! - Create Puddle", user});
+    console.log("Authenticated user:\n" + user);
+
+    res.render('create', { title: "Splasher! - Create Puddle", user });
 });
 
-app.post('/create', async (req, res) => {
+app.get('/explore', isAuthenticated, (req, res) => {
+    console.log("Now visiting GET route ('/explore')...");
     const user = req.session.user;
+    console.log("Authenticated user:\n" + user);
+
+    res.render('explore', {title: "Splasher! - Explore", user});
+});
+
+app.get('/editprofile', isAuthenticated, async (req, res) => {
+    console.log("Now visiting GET route ('/editprofile')...");
+    const user = req.session.user;
+    console.log("Authenticated user:\n" + user);
+
+    res.render('editprofile', { title: "Splasher! - Edit Profile", user });
+});
+
+app.post('/editprofile', isAuthenticated, async (req, res) => {
+    console.log("Now visiting POST route ('/editprofile')...");
+    const user = req.session.user;
+    console.log("Authenticated user:\n" + user);
+
+    let userID = user.userID;
+    let profilePicturePath = req.body.profilePicturePath;
+    let username = req.body.username;
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
+    let sex = req.body.sex;
+    let email = req.body.email;
+    let phoneNumber = req.body.phoneNumber;
+    let isPublic = req.body.isPublic;
+
+    console.log("About to update profile");
+
+    let sql = `UPDATE users
+                SET profilePicturePath = ?,
+                    username = ?,
+                    firstName = ?,
+                    lastName = ?,
+                    sex = ?,
+                    email = ?,
+                    phoneNumber = ?,
+                    isPublic = ?
+                WHERE userID = ?`;
+    let params = [profilePicturePath, username, firstName, lastName, sex, email, phoneNumber, isPublic, userID];
+    let rows = await executeSQL(sql, params);
+
+    sql = `SELECT *
+            FROM users
+            WHERE userID = ?`;
+    params = [userID];
+    userRows = await executeSQL(sql, params);
+
+    req.session.user = userRows[0];
+
+    res.redirect('/profile');
+});
+
+app.post('/create', isAuthenticated, async (req, res) => {
+    console.log("Now visiting POST route ('/create')...");
+    const user = req.session.user;
+    console.log("Authenticated user:\n" + user);
     let puddleImagePath = req.body.puddleImagePath;
     let puddleText = req.body.puddleText;
     let timeStamp = getCurrentTimestamp();
@@ -85,6 +166,7 @@ app.post('/create', async (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
+    console.log("Now visiting POST route ('/signup')...");
     // get fields from sign up page
     let username = req.body.username;
     let firstName = req.body.firstName;
@@ -121,6 +203,7 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+    console.log("Now visiting POST route ('/login')...");
     // get fields from log in page
     let username = req.body.username;
     let password = req.body.password;
@@ -165,6 +248,7 @@ app.get("/dbTest", async function (req, res) {
 
 // executes the sql statements
 async function executeSQL(sql, params) {
+    console.log("Now visiting executeSQL() function...");
     return new Promise(function (resolve, reject) {
         pool.query(sql, params, function (err, rows, fields) {
             if (err) {
@@ -211,5 +295,5 @@ function dbConnection() {
 
 // starts server
 app.listen(3000, () => {
-    console.log("Expresss server running on port 3000...");
+    console.log("Expresss server running on localhost:3000/");
 })

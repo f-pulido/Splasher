@@ -1,0 +1,108 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+label, input {
+    display: block;
+}
+
+.profileView img {
+    margin-right: 40px; /* Increase the margin to add more space */
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    border: 4px solid black;
+}
+
+.profileView h1 {
+    text-align: center;
+}
+
+.profileViewPictureStat {
+    display: flex;
+    justify-content: center; /* Aligns children in the center horizontally */
+    align-items: center; /* Aligns children in the center vertically */
+    text-align: center;
+}
+
+.profileViewStats {
+    text-align: center;
+    margin-left: 40px; /* Adjust the margin to add more space */
+    /* border: 1px solid black; */
+}
+
+.statsItem {
+    margin: 1rem;
+}
+
+.profileView input[type="submit"] {
+    margin: 0 auto;
+    width: 50%;
+    font-size: 16px;
+    background-color: rgba(187, 187, 187, 0.5);
+}
+
+.profilePuddles {
+    background-color: rgba(205, 239, 241, 0.9); /* Light background color */
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow for depth */
+    text-align: center;
+}
+
+.profilePuddles h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333; /* Dark text color */
+}
+
+.profilePuddles p {
+    font-size: 1em;
+    line-height: 1.4;
+    color: #555; 
+}
+
+.profilePuddles img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.navbar {
+    background-color: rgba(205, 239, 241, 0.9);
+    padding: 20px;
+}
+
+.navbar a {
+    position: relative;
+    font-size: 20px;
+    color: black;
+    margin-left: 40px;
+    text-decoration: none;
+    font-family: "input-serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.navbar a::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: black;
+    transition: .3s;
+}
+
+.navbar a:hover::before {
+    width: 100%;
+}
+
+.navbar a.active {
+    color: #008cff;
+}
