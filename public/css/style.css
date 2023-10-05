@@ -1,77 +1,28 @@
-html {
-    height: 100%;
-    width: 100%;
-}
-body {
-    font-family: Arial, Helvetica, sans-serif;
-}
-label, input {
-    display: block;
+/* Reset some default styles */
+body, h1, p {
+    margin: 0;
+    padding: 0;
 }
 
-.profileView img {
-    margin-right: 40px; /* Increase the margin to add more space */
-    height: 200px;
-    width: 200px;
-    border-radius: 50%;
-    border: 4px solid black;
-}
-
-.profileView h1 {
-    text-align: center;
-}
-
-.profileViewPictureStat {
-    display: flex;
-    justify-content: center; /* Aligns children in the center horizontally */
-    align-items: center; /* Aligns children in the center vertically */
-    text-align: center;
-}
-
-.profileViewStats {
-    text-align: center;
-    margin-left: 40px; /* Adjust the margin to add more space */
-    /* border: 1px solid black; */
-}
-
-.statsItem {
-    margin: 1rem;
-}
-
-.profileView input[type="submit"] {
-    margin: 0 auto;
-    width: 50%;
-    font-size: 16px;
-    background-color: rgba(187, 187, 187, 0.5);
-}
-
-.profilePuddles {
-    background-color: rgba(205, 239, 241, 0.9); /* Light background color */
+/* Common Styles for Forms */
+form {
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: #fff;
     padding: 20px;
-    margin: 20px 0;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow for depth */
-    text-align: center;
-}
-
-.profilePuddles h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    color: #333; /* Dark text color */
-}
-
-.profilePuddles p {
-    font-size: 1em;
-    line-height: 1.4;
-    color: #555; 
-}
-
-.profilePuddles img {
-    max-width: 100%;
     border-radius: 8px;
-    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Header Styles */
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+}
+
+/* Navbar Styles */
 .navbar {
     background-color: rgba(205, 239, 241, 0.9);
     padding: 20px;
@@ -105,4 +56,142 @@ label, input {
 
 .navbar a.active {
     color: #008cff;
+}
+
+/* Main Logo Styles */
+.mainlogo {
+    margin: 0;
+    font-size: 2em;
+}
+
+/* Profile View Styles */
+.profileView {
+    text-align: center;
+}
+
+.profileView img {
+    margin-right: 40px;
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    border: 4px solid black;
+}
+
+.profileView h1 {
+    text-align: center;
+}
+
+.profileViewPictureStat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.profileViewStats {
+    text-align: center;
+    margin-left: 40px;
+}
+
+.statsItem {
+    margin: 1rem;
+}
+
+.profileView input[type="submit"] {
+    margin: 0 auto;
+    width: 50%;
+    font-size: 16px;
+    background-color: rgba(187, 187, 187, 0.5);
+}
+
+/* Profile Puddles Styles */
+.profilePuddles {
+    background-color: rgba(205, 239, 241, 0.9);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.profilePuddles h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.profilePuddles p {
+    font-size: 1em;
+    line-height: 1.4;
+    color: #555; 
+}
+
+.profilePuddles img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Login Container Styles */
+.logInContainer, .signupContainer {
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form Labels Styles */
+label {
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Form Inputs Styles */
+input, textarea, select {
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Submit Button Styles */
+input[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+}
+
+/* Change button color on hover */
+input[type="submit"]:hover {
+    background-color: #555;
+}
+
+/* Redirect Section Styles */
+.redirectSignUp, .redirectLogIn {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Hyperlink Styles */
+.redirectSignUp a, .redirectLogIn a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Change the color when hovering over the hyperlink */
+.redirectSignUp a:hover, .redirectLogIn a:hover {
+    color: #555;
 }
