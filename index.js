@@ -24,17 +24,92 @@ app.use(express.static("public"));
 //to parse Form data sent using POST method
 app.use(express.urlencoded({ extended: true }));
 
-//routes
+// routes
+
+// login
 app.get('/', (req, res) => {
     console.log("Now visiting GET route ('/')...");
     res.render('login', { title: 'Splasher! - Log In' })
 });
 
+app.post('/login', async (req, res) => {
+    console.log("Now visiting POST route ('/login')...");
+    // get fields from log in page
+    let username = req.body.username;
+    let password = req.body.password;
+    let passwordHash = "";
+
+    // SQL query statement to retrieve user
+    let sql = `SELECT * FROM users WHERE username = ?`;
+
+    // set username as the parameter
+    let params = [username];
+
+    // execute the SQL statement
+    let rows = await executeSQL(sql, params);
+
+    console.log(rows);
+
+    // ensure user exists
+    if (rows.length > 0) {
+        passwordHash = rows[0].passwordHash;
+    }
+
+    // match passwords
+    const match = await bcrypt.compare(password, passwordHash);
+
+    if (match) {
+        req.session.authenticated = true;
+        req.session.user = rows[0];
+        res.redirect('/home');
+    } else {
+        res.render('login', { title: "Splasher! - Login" });
+    }
+});
+
+// signup
 app.get('/signup', (req, res) => {
     console.log("Now visiting GET route ('/signup')...");
     res.render('signup', { title: 'Splasher! - Sign Up' })
 });
 
+app.post('/signup', async (req, res) => {
+    console.log("Now visiting POST route ('/signup')...");
+    // get fields from sign up page
+    let username = req.body.username;
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
+    let dateOfBirth = req.body.dateOfBirth;
+    let sex = req.body.sex;
+    let email = req.body.email;
+    let phoneNumber = req.body.phoneNumber;
+    let password = req.body.password;
+
+    // hash password
+    let passwordHash = bcrypt.hashSync(password, saltRounds);
+
+    // get time stamp of account creation
+    let timeStamp = getCurrentTimestamp();
+
+    // make sure fields are not empty
+    if (username && firstName && lastName && dateOfBirth && sex && email && phoneNumber && password) {
+        try { // insert data into database
+            let sql = `INSERT INTO users (username, firstName, lastName, dateOfBirth, sex, email, phoneNumber, passwordHash, timeStamp)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            let params = [username, firstName, lastName, dateOfBirth, sex, email, phoneNumber, passwordHash, timeStamp];
+            let rows = await executeSQL(sql, params);
+            console.log("sex:" + sex);
+            req.session.authenticated = true;
+            console.log(rows);
+            req.session.user = rows[0];
+            res.redirect('/home');
+        } catch (error) {
+            res.render('signup', { title: "Splasher! - Sign Up" });
+        }
+    }
+});
+
+// home
 app.get('/home', isAuthenticated, (req, res) => {
     console.log("Now visiting GET route ('/home')...");
     const user = req.session.user;
@@ -42,12 +117,82 @@ app.get('/home', isAuthenticated, (req, res) => {
     res.render('home', { title: "Splasher!", user });
 });
 
-app.get('/profile', isAuthenticated, async (req, res) => {
-    console.log("Now visiting GET route ('/profile')...");
+// explore
+app.get('/explore', isAuthenticated, (req, res) => {
+    console.log("Now visiting GET route ('/explore')...");
+    const user = req.session.user;
+
+    let results = [];
+
+    res.render('explore', {title: "Splasher! - Explore", user, results});
+});
+
+app.post('/explore', isAuthenticated, async (req, res) => {
+    console.log("Now visiting POST route ('/explore')...");
+    const user = req.session.user;
+
+    let username = req.body.username;
+
+    let sql = `SELECT userID, username, profilePicturePath, firstName, lastName
+               FROM users
+               WHERE username LIKE ?`;
+    let params = `%${username}%`;
+    let rows = await executeSQL(sql, params);
+    console.log(rows);
+
+    res.render('explore', {title: "Splasher! - Explore", user, results:rows})
+});
+
+// create
+app.get('/create', isAuthenticated, (req, res) => {
+    console.log("Now visiting GET route ('/create')...");
     const user = req.session.user;
     console.log("Authenticated user:\n" + user);
 
+    res.render('create', { title: "Splasher! - Create Puddle", user });
+});
+
+app.post('/create', isAuthenticated, async (req, res) => {
+    console.log("Now visiting POST route ('/create')...");
+    const user = req.session.user;
+    console.log("Authenticated user:\n" + user);
+    let puddleImagePath = req.body.puddleImagePath;
+    let puddleText = req.body.puddleText;
+    let timeStamp = getCurrentTimestamp();
     let userID = user.userID;
+
+    console.log(puddleImagePath);
+    console.log(puddleText);
+    console.log(timeStamp);
+    console.log(userID);
+
+    if (!puddleImagePath && !puddleText) {
+        console.log("Can't be empty!");
+        res.render('create');
+    } else {
+        console.log("This is valid.")
+        let sql = `INSERT INTO puddle (puddleImagePath, puddleText, timeStamp, userID)
+                   VALUES (?, ?, ?, ?)`;
+        let params = [puddleImagePath, puddleText, timeStamp, userID];
+        let rows = await executeSQL(sql, params);
+        res.redirect('/profile');
+    }
+});
+
+// profile
+app.get('/profile', isAuthenticated, async (req, res) => {
+    console.log("Now visiting GET route ('/profile')...");
+    const authenticatedUser = req.session.user;
+    const clickedUserID = req.query.userID;
+
+    let userID;
+
+    if (clickedUserID) {
+        userID = clickedUserID;
+    } else {
+        userID = authenticatedUser.userID;
+    }
+
     let sql = `SELECT u.username, p.puddleImagePath, p.puddleText, p.timeStamp
                FROM users u
                JOIN puddle p USING (userID)
@@ -62,38 +207,40 @@ app.get('/profile', isAuthenticated, async (req, res) => {
            LEFT JOIN follows f ON u.userID = f.followeeID
            WHERE userID = ?
            GROUP BY u.username`;
-    let followerRows = await executeSQL(sql, params); 
+    let followerRows = await executeSQL(sql, params);
 
     sql = `SELECT u.username, COUNT(f.followerID) as totalFollowing
            FROM users u
            LEFT JOIN follows f ON u.userID = f.followerID
+           WHERE u.userID = ?
            GROUP BY u.username`;
     let followingRows = await executeSQL(sql, params);
 
-    res.render('profile', { title: "Splasher! - Profile", user, puddles: rows, followers: followerRows[0], following: followingRows[0]});
+    let user;
+
+    if (clickedUserID) {
+        // If a specific user is clicked, fetch their user data
+        sql = `SELECT * FROM users WHERE userID = ?`;
+        let userData = await executeSQL(sql, params);
+        user = userData[0];
+    } else {
+        user = authenticatedUser;
+    }
+
+    res.render('profile', {
+        title: "Splasher! - Profile", mainUser: req.session.user,
+        user: user,
+        puddles: rows,
+        followers: followerRows[0],
+        following: followingRows[0]
+    });
 });
 
-app.get('/create', isAuthenticated, (req, res) => {
-    console.log("Now visiting GET route ('/create')...");
-    const user = req.session.user;
-    console.log("Authenticated user:\n" + user);
 
-    res.render('create', { title: "Splasher! - Create Puddle", user });
-});
-
-app.get('/explore', isAuthenticated, (req, res) => {
-    console.log("Now visiting GET route ('/explore')...");
-    const user = req.session.user;
-    console.log("Authenticated user:\n" + user);
-
-    res.render('explore', {title: "Splasher! - Explore", user});
-});
-
+// editprofile
 app.get('/editprofile', isAuthenticated, async (req, res) => {
     console.log("Now visiting GET route ('/editprofile')...");
     const user = req.session.user;
-    console.log("Authenticated user:\n" + user);
-
     res.render('editprofile', { title: "Splasher! - Edit Profile", user });
 });
 
@@ -138,103 +285,25 @@ app.post('/editprofile', isAuthenticated, async (req, res) => {
     res.redirect('/profile');
 });
 
-app.post('/create', isAuthenticated, async (req, res) => {
-    console.log("Now visiting POST route ('/create')...");
+// follow
+app.post('/follow', isAuthenticated, async (req, res) => {
     const user = req.session.user;
-    console.log("Authenticated user:\n" + user);
-    let puddleImagePath = req.body.puddleImagePath;
-    let puddleText = req.body.puddleText;
-    let timeStamp = getCurrentTimestamp();
-    let userID = user.userID;
-
-    console.log(puddleImagePath);
-    console.log(puddleText);
-    console.log(timeStamp);
-    console.log(userID);
-
-    if (!puddleImagePath && !puddleText) {
-        console.log("Can't be empty!");
-        res.render('create');
-    } else {
-        console.log("This is valid.")
-        let sql = `INSERT INTO puddle (puddleImagePath, puddleText, timeStamp, userID)
-                   VALUES (?, ?, ?, ?)`;
-        let params = [puddleImagePath, puddleText, timeStamp, userID];
-        let rows = await executeSQL(sql, params);
-        res.redirect('/profile');
-    }
-});
-
-app.post('/signup', async (req, res) => {
-    console.log("Now visiting POST route ('/signup')...");
-    // get fields from sign up page
-    let username = req.body.username;
-    let firstName = req.body.firstName;
-    let lastName = req.body.lastName;
-    let dateOfBirth = req.body.dateOfBirth;
-    let sex = req.body.sex;
-    let email = req.body.email;
-    let phoneNumber = req.body.phoneNumber;
-    let password = req.body.password;
-
-    // hash password
-    let passwordHash = bcrypt.hashSync(password, saltRounds);
-
-    // get time stamp of account creation
+    let followerID = user.userID;
+    let followeeID = req.body.followeeID;
     let timeStamp = getCurrentTimestamp();
 
-    // make sure fields are not empty
-    if (username && firstName && lastName && dateOfBirth && sex && email && phoneNumber && password) {
-        try { // insert data into database
-            let sql = `INSERT INTO users (username, firstName, lastName, dateOfBirth, sex, email, phoneNumber, passwordHash, timeStamp)
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-            let params = [username, firstName, lastName, dateOfBirth, sex, email, phoneNumber, passwordHash, timeStamp];
-            let rows = await executeSQL(sql, params);
-            console.log("sex:" + sex);
-            req.session.authenticated = true;
-            console.log(rows);
-            req.session.user = rows[0];
-            res.redirect('/home');
-        } catch (error) {
-            res.render('signup', { title: "Splasher! - Sign Up" });
-        }
-    }
-
-});
-
-app.post('/login', async (req, res) => {
-    console.log("Now visiting POST route ('/login')...");
-    // get fields from log in page
-    let username = req.body.username;
-    let password = req.body.password;
-    let passwordHash = "";
-
-    // SQL query statement to retrieve user
-    let sql = `SELECT * FROM users WHERE username = ?`;
-
-    // set username as the parameter
-    let params = [username];
-
-    // execute the SQL statement
+    let sql = `INSERT INTO follows (followerID, followeeID, timeStamp)
+               VALUES (?, ?, ?)`;
+    let params = [followerID, followeeID, timeStamp];
     let rows = await executeSQL(sql, params);
 
-    console.log(rows);
+    res.redirect('/profile');
+});
 
-    // ensure user exists
-    if (rows.length > 0) {
-        passwordHash = rows[0].passwordHash;
-    }
-
-    // match passwords
-    const match = await bcrypt.compare(password, passwordHash);
-
-    if (match) {
-        req.session.authenticated = true;
-        req.session.user = rows[0];
-        res.redirect('/home');
-    } else {
-        res.render('login', { title: "Splasher! - Login" });
-    }
+// logout
+app.get('/logout', isAuthenticated, (req, res) => {
+    req.session.destroy();
+    res.redirect('/')
 });
 
 // simple database test

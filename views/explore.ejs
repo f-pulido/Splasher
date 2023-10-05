@@ -17,7 +17,19 @@
             <input type="text" id="username" name="username"/>
             <input type="submit" id="submitSearch" name="submitSearch" value="Search"/>
         </fieldset>
-    
     </form>
+
+    <% results.forEach(result => { %>
+        <div class="miniProfileView">
+            <form action="/profile" method="GET">
+                <input type="hidden" name="userID" value="<%= result.userID %>"/>
+                <img src="<%=result.profilePicturePath%>">
+                <p><%= result.username %></p>
+                <p><%= result.firstName %> <%= result.lastName%></p>
+                <input type="submit" name="viewProfile" value="View Profile">
+            </form>
+        </div>
+        <% console.log("userID: ", result.userID );%>
+    <% }); %>
 </body>
 </html>

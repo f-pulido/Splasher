@@ -195,3 +195,34 @@ input[type="submit"]:hover {
 .redirectSignUp a:hover, .redirectLogIn a:hover {
     color: #555;
 }
+
+
+.miniProfileView {
+    display: flex;
+    flex-direction: column; /* Adjusted to stack items vertically */
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: center; /* Centering text within the container */
+    background-color: rgba(205, 239, 241, 0.9);
+}
+
+.miniProfileView img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: 2px solid black;
+    margin-bottom: 10px; /* Add some space between the image and text */
+}
+
+.miniProfileView p {
+    margin: 0;
+}
+
+.miniProfileView p:first-child {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.miniProfileView p:last-child {
+    font-size: 14px;
+}

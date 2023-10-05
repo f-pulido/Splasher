@@ -32,7 +32,11 @@
 
             <!-- <label for="dateOfBirth">Date of Birth:</label>
             <input type="datetime" id="dateOfBirth" name="dateOfBirth" value="<%= user.dateOfBirth %>" /> -->
-
+            <label for="dateOfBirth">Date of Birth:</label>
+            <input type="date" id="dateOfBirth" name="dateOfBirth" value="<%= user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '' %>" />
+            
+            
+        
 
             <% if (user.sex=="M" ) { %>
                 <label for="sexM">Male</label>
@@ -70,15 +74,15 @@
             <input type="tel" id="phoneNumber" name="phoneNumber" value="<%=user.phoneNumber%>"/>
 
             <label for="isPublic">Account Privacy:</label>
-            <% if (user.isPublic == 1) { %>
-                <select id="isPublic">
-                    <option value="True" selected>Public</option>
-                    <option value="False">Private</option>
+            <% if (!user.isPublic) { %>
+                <select id="isPublic" name="isPublic">
+                    <option value="1">Public</option>
+                    <option value="0" selected>Private</option>
                 </select>
             <% } else { %>
-                <select id="isPublic">
-                    <option value="True">Public</option>
-                    <option value="False" selected>Private</option>
+                <select id="isPublic" name="isPublic">
+                    <option value="1" selected>Public</option>
+                    <option value="0">Private</option>
                 </select>
             <% } %>
 

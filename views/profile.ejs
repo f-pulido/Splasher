@@ -13,29 +13,44 @@
 
 <body>
     <%- include('partials/nav.ejs') %>
-        <div class="profileView">
-            <h1>
-                <%= user.username %>
-            </h1>
 
-            <div class="profileViewPictureStat">
-                <div>
-                    <img src="<%= user.profilePicturePath%>" alt="profilePicturePath">
-                    <p><%= user.firstName %> <%= user.lastName %></p>
-                </div>
+    <div class="profileView">
+        <h1>
+            <%= user.username %>
+        </h1>
 
-                <div class="profileViewStats">
-                    <span class="statsItem"><%= puddles.length %> <b>Posts</b></span>
-                    <span class="statsItem"><%= followers.totalFollowers %> <b>Followers</b></span>
-                    <span class="statsItem"><%=following.totalFollowing%> <b>Following</b></span>
-                </div>
-
+        <div class="profileViewPictureStat">
+            <div>
+                <img src="<%= user.profilePicturePath%>" alt="profilePicturePath">
+                <p><%= user.firstName %> <%= user.lastName %></p>
             </div>
 
+            <div class="profileViewStats">
+                <span class="statsItem"><%= puddles.length %> <b>Posts</b></span>
+                <span class="statsItem"><%= followers.totalFollowers %> <b>Followers</b></span>
+                <span class="statsItem"><%=following.totalFollowing%> <b>Following</b></span>
+            </div>
+
+        </div>
+
+        <% if (user.userID == mainUser.userID) { %>
             <form action="/editprofile">
                 <input type="submit" id="editProfileSubmit" name="editProfileSubmit" value="Edit Profile">
             </form>
-        </div>
+        <% } else if (user.isPublic == 1) { %>
+            <form action="/follow" method="POST">
+                <input type="hidden" name="followeeID" value="<%= user.userID %>"/>
+                <input type="submit" id="followButton" name="followButton" value="Follow">
+            </form>
+        <% } else if (user.isPublic == 0) {%>
+            <form action="#">
+                <input type="submit" id="requestFollowButton" name="requestFollowButton" value="Request Follow">
+            </form>
+        <% } %>
+
+    </div>
+
+    <% if (user.userID == mainUser.userID || user.isPublic == 1) { %>
 
         <% for (let i=0; i < puddles.length; i++) { %>
             <div class="profilePuddles">
@@ -43,7 +58,8 @@
                 <img src="<%= puddles[i].puddleImagePath %>" alt="<%= puddles[i].puddleImagePath %>">
                 <p>Posted on: <span id="timeStamp"><%= puddles[i].timeStamp %></span></p>
             </div>
-            <% } %>
+        <% } %>
+    <% } %>
 
 </body>
 </html>
