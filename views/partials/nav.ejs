@@ -1,7 +1,17 @@
 <div class="navbar">
-    <a href="/home">Home</a>
-    <a href="/explore">Explore</a>
-    <a href="/create">Create Puddle</a>
-    <a href="/profile">Profile</a>
-    <a href="/logout">Logout</a>
+    <div class="navbarLogo">
+        <a href="/home">Splasher</a>
+    </div>
+
+    <div class="navbarItems">
+        <a href="/home">Home</a>
+        <a href="/explore">Explore</a>
+        <a href="/create">Create Puddle</a>
+        <a href="/profile">Profile</a>
+    </div>
+
+    <div class="navbarLogout">
+        <a href="/logout">Logout</a>
+        <img src="<%= user.profilePicturePath %>" alt="<%= user.profilePicturePath %>">
+    </div>
 </div>

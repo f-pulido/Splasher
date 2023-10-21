@@ -5,7 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><% title %></title>
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/explore.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 </head>
 <body>
     <%- include('partials/nav.ejs') %>
@@ -13,19 +18,20 @@
     <form action="/explore" method="POST">
         <fieldset>
             <legend>Search for Users</legend>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username"/>
+            <input type="text" id="username" name="username" placeholder="Username"/>
             <input type="submit" id="submitSearch" name="submitSearch" value="Search"/>
         </fieldset>
     </form>
 
     <% results.forEach(result => { %>
         <div class="miniProfileView">
-            <form action="/profile" method="GET">
-                <input type="hidden" name="userID" value="<%= result.userID %>"/>
+            <div class="miniProfileViewUser">
                 <img src="<%=result.profilePicturePath%>">
                 <p><%= result.username %></p>
                 <p><%= result.firstName %> <%= result.lastName%></p>
+            </div>
+            <form action="/profile" method="GET">
+                <input type="hidden" name="userID" value="<%= result.userID %>"/>
                 <input type="submit" name="viewProfile" value="View Profile">
             </form>
         </div>

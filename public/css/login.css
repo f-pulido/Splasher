@@ -1,0 +1,56 @@
+/* Styles for login.ejs and signup.ejs */
+.logInContainer, .signUpContainer {
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+legend {
+    font-size: 70px;
+    margin: 0 auto;
+    font-family: 'Marck Script', cursive;
+}
+
+fieldset {
+    margin: 0 auto;
+}
+
+input, select {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: 200px;
+}
+
+label {
+    font-family: arial;
+    font-size: 13px;
+    color: gray;
+    display: block;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.redirectSignUp, .redirectLogIn {
+    text-align: center;
+}
+
+.redirectSignUp a, .redirectLogIn a {
+    text-decoration: none;
+    color: cadetblue;
+}
+
+/* Basic styling */
+input[type="submit"] {
+    background-color: #49bebe; /* Green background color */
+    color: white; /* White text color */
+    padding: 10px 15px; /* Padding for better appearance */
+    font-size: 16px; /* Font size */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Optional: Add rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Hover effect */
+input[type="submit"]:hover {
+    background-color: #40adad; /* Darker green color on hover */
+}

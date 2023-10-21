@@ -5,18 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 </head>
 <body>
     <%- include('partials/nav.ejs') %>
     <form action="/create" method="POST">
         <fieldset>
             <legend>Create a Puddle</legend>
-            <label for="puddleImagePath">Puddle Image URL:</label>
-            <input type="url" id="puddleImagePath" name="puddleImagePath"/>
+            <input type="url" id="puddleImagePath" name="puddleImagePath" placeholder="Puddle Image URL"/>
 
-            <label for="puddleText">Puddle Text:</label>
-            <textarea id="puddleText" name="puddleText"></textarea>
+            <textarea id="puddleText" name="puddleText" placeholder="Puddle Text"></textarea>
 
             <input type="submit" id="puddleSubmit" name="puddleSubmit" value="Create Puddle"/>
         </fieldset>

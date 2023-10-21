@@ -4,6 +4,7 @@ body, h1, p {
     padding: 0;
 }
 
+
 /* Common Styles for Forms */
 form {
     max-width: 400px;
@@ -20,42 +21,6 @@ header {
     color: #fff;
     text-align: center;
     padding: 1em 0;
-}
-
-/* Navbar Styles */
-.navbar {
-    background-color: rgba(205, 239, 241, 0.9);
-    padding: 20px;
-}
-
-.navbar a {
-    position: relative;
-    font-size: 20px;
-    color: black;
-    margin-left: 40px;
-    text-decoration: none;
-    font-family: "input-serif", serif;
-    font-weight: 400;
-    font-style: normal;
-}
-
-.navbar a::before {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: black;
-    transition: .3s;
-}
-
-.navbar a:hover::before {
-    width: 100%;
-}
-
-.navbar a.active {
-    color: #008cff;
 }
 
 /* Main Logo Styles */

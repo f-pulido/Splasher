@@ -1,0 +1,106 @@
+/* Basic styling common to all files */
+body {
+    margin: 0;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: rgb(147, 207, 209);
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.navbarLogo a {
+    font-family: 'Marck Script', cursive;
+    color: black;
+    font-size: 30px;
+    text-decoration: black;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.navbarItems a, .navbarLogout a {
+    position: relative;
+    font-size: 20px;
+    color: black;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+.navbarLogout {
+    margin-left: auto;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.navbarLogout img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 10px;
+    border: 1px solid black;
+}
+.navbarItems a::before, .navbarLogout a::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: black;
+    transition: .3s;
+}
+
+.navbarItems a:hover::before, .navbarLogout a:hover::before {
+    width: 100%;
+}
+
+.navbarItems a.active, .navbarLogout a.active {
+    color: #008cff;
+}
+
+legend {
+    font-size: 20px;
+    margin: 0 auto;
+    /* font-family: 'Marck Script', cursive; */
+}
+
+fieldset {
+    margin: 0 auto;
+    max-width: 400px;
+}
+
+input, select, textarea {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: 200px;
+}
+
+label {
+    font-family: arial;
+    font-size: 13px;
+    color: gray;
+    display: block;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+input[type="submit"] {
+    background-color: #49bebe; /* Green background color */
+    color: white; /* White text color */
+    padding: 10px 15px; /* Padding for better appearance */
+    font-size: 16px; /* Font size */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Optional: Add rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Hover effect */
+input[type="submit"]:hover {
+    background-color: #40adad; /* Darker green color on hover */
+}

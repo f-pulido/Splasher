@@ -5,23 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/login.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 </head>
-<body>
 
-    <header>
-        <h1 class="mainlogo">Splasher</h1>
-    </header>
+<body id="login">
 
     <div class="logInContainer">
         <form action="/login" method="POST">
             <fieldset>
-                <legend>Login</legend>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required/>
+                <legend>Splasher</legend>
 
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required/>
+                <input type="text" id="username" name="username" placeholder="Username" required/>
+                <input type="password" id="password" name="password" placeholder="Password" required/>
 
                 <input type="submit" id="logInSubmit" name="logInSubmit" value="Log In"/>
             </fieldset>
@@ -31,7 +31,6 @@
     <div class="redirectSignUp">
         <p>Don't have an account? <a href="/signup">Sign Up</a></p>
     </div>
-
 
 </body>
 </html>

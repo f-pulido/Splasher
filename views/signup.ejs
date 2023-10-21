@@ -5,47 +5,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/login.css" rel="stylesheet">
     <script src="/js/script.js"></script>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Splasher</h1>
-    </header>
 
-    <div class="signupContainer">
+    <div class="signUpContainer">
         <form action="/signup" method="POST">
             <fieldset>
-                <legend>Sign Up</legend>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required/>
+                <legend>Splasher</legend>
 
-                <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" required/>
+                <input type="text" id="username" name="username" placeholder="Username" required/>
 
-                <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" required/>
+                <input type="text" id="firstName" name="firstName" placeholder="First Name" required/>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required/>
+                <input type="text" id="lastName" name="lastName" placeholder="Last Name" required/>
 
-                <label for="phoneNumber">Phone Number:</label>
-                <input type="tel" id="phoneNumber" name="phoneNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required/>
+                <input type="email" id="email" name="email" placeHolder="Email" required/>
 
-                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" placeholder="Phone Number" required/>
+
+                <label for="dateOfBirth">Date of Birth</label>
                 <input type="date" id="dateOfBirth" name="dateOfBirth" required/>
 
-                <label for="sexM">Male</label>
-                <input type="radio" id="sexM" name="sex" value="M"/>
-
-                <label for="sexF">Female</label>
-                <input type="radio" id="sexF" name="sex" value="F"/>
-
-                <label for="sexNULL">Prefer Not To Say</label>
-                <input type="radio" id="sexNULL" name="sex" value="NULL" checked/>
-
-                <label for="password">Create Password:</label>
-                <input type="password" id="password" name="password" required/>
+                <label for="sex">Select Gender</label>
+                <select id="sex" name="sex">
+                    <option id="sexNULL" value="NULL" selected>Prefer Not To Say</option>
+                    <option id="sexM" value="M">Male</option>
+                    <option id="sexF" value="F">Female</option>
+                </select>
+                
+                <input type="password" id="password" name="password" placeholder="Create Password" required/>
 
                 <!-- <label for="passwordConfirm">Confirm Password:</label>
                 <input type="password" id="passwordConfirm" name="password" required/> -->

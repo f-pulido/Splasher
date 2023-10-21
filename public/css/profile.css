@@ -1,0 +1,83 @@
+/* Color Scheme for Splasher */
+:root {
+    --primary-blue: #3498db; /* Main blue color */
+    --dark-blue: #2c3e50; /* Darker blue for contrast */
+    --light-blue: #7f8c8d; /* Lighter blue for accents */
+    --background-gray: #ecf0f1; /* Background color */
+    --accent-color: #e74c3c; /* Accent color (e.g., for notifications or alerts) */
+}
+
+.puddleView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 50%;
+    margin: 0 auto;
+    border: 1px solid var(--dark-blue);
+    margin-bottom: 50px;
+}
+
+.puddleUser {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--dark-blue);
+    width: 100%;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.puddleUser img {
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--dark-blue);
+}
+
+.puddleUser p {
+    color: white;
+    font-size: 18px;
+}
+
+.puddle {
+    width: 100%;
+    background-color: var(--background-gray);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.puddleText {
+    font-size: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.puddleImage img {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.puddleDate {
+    color: rgb(102, 102, 102);
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.puddleOptions {
+    width: 100%;
+    background-color: var(--dark-blue);
+    display: flex;
+    flex-direction: row;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.like, .comment {
+    margin-left: 20px;
+    color: white; /* Text color on the buttons */
+}

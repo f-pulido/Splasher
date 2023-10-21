@@ -110,11 +110,24 @@ app.post('/signup', async (req, res) => {
 });
 
 // home
-app.get('/home', isAuthenticated, (req, res) => {
+app.get('/home', isAuthenticated, async (req, res) => {
     console.log("Now visiting GET route ('/home')...");
     const user = req.session.user;
     console.log("Authenticated user:\n" + user);
-    res.render('home', { title: "Splasher!", user });
+//     SELECT *
+// FROM puddle p
+// LEFT JOIN users u on p.userID = u.userID
+// where u.isPublic = 1;
+    let sql = ` SELECT p.puddleImagePath, p.puddleText, p.timeStamp, p.userId, u.username, u.profilePicturePath, u.isPublic
+                FROM puddle p
+                LEFT JOIN users u ON p.userID = u.userID
+                WHERE u.isPublic = ?
+                ORDER BY p.timeStamp DESC`;
+    let params = 1;
+    let rows = await executeSQL(sql, params);
+
+    console.log(rows);
+    res.render('home', { title: "Splasher!", user, foundUser:rows });
 });
 
 // explore
@@ -193,7 +206,7 @@ app.get('/profile', isAuthenticated, async (req, res) => {
         userID = authenticatedUser.userID;
     }
 
-    let sql = `SELECT u.username, p.puddleImagePath, p.puddleText, p.timeStamp
+    let sql = `SELECT u.username, u.profilePicturePath, p.puddleImagePath, p.puddleText, p.timeStamp
                FROM users u
                JOIN puddle p USING (userID)
                WHERE userID = ?
@@ -228,8 +241,9 @@ app.get('/profile', isAuthenticated, async (req, res) => {
     }
 
     res.render('profile', {
-        title: "Splasher! - Profile", mainUser: req.session.user,
-        user: user,
+        title: "Splasher! - Profile",
+        user: req.session.user,
+        foundUser: user,
         puddles: rows,
         followers: followerRows[0],
         following: followingRows[0]

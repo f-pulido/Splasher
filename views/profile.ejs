@@ -9,6 +9,12 @@
         <%= title %>
     </title>
     <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/profile.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -16,33 +22,33 @@
 
     <div class="profileView">
         <h1>
-            <%= user.username %>
+            <%= foundUser.username %>
         </h1>
 
         <div class="profileViewPictureStat">
             <div>
                 <img src="<%= user.profilePicturePath%>" alt="profilePicturePath">
-                <p><%= user.firstName %> <%= user.lastName %></p>
+                <p><%= foundUser.firstName %> <%= foundUser.lastName %></p>
             </div>
 
             <div class="profileViewStats">
                 <span class="statsItem"><%= puddles.length %> <b>Posts</b></span>
                 <span class="statsItem"><%= followers.totalFollowers %> <b>Followers</b></span>
-                <span class="statsItem"><%=following.totalFollowing%> <b>Following</b></span>
+                <span class="statsItem"><%= following.totalFollowing%> <b>Following</b></span>
             </div>
 
         </div>
 
-        <% if (user.userID == mainUser.userID) { %>
+        <% if (foundUser.userID == user.userID) { %>
             <form action="/editprofile">
                 <input type="submit" id="editProfileSubmit" name="editProfileSubmit" value="Edit Profile">
             </form>
-        <% } else if (user.isPublic == 1) { %>
+        <% } else if (foundUser.isPublic == 1) { %>
             <form action="/follow" method="POST">
                 <input type="hidden" name="followeeID" value="<%= user.userID %>"/>
                 <input type="submit" id="followButton" name="followButton" value="Follow">
             </form>
-        <% } else if (user.isPublic == 0) {%>
+        <% } else if (foundUser.isPublic == 0) {%>
             <form action="#">
                 <input type="submit" id="requestFollowButton" name="requestFollowButton" value="Request Follow">
             </form>
@@ -50,13 +56,32 @@
 
     </div>
 
-    <% if (user.userID == mainUser.userID || user.isPublic == 1) { %>
-
+    <% if (foundUser.userID == user.userID || foundUser.isPublic == 1) { %>
         <% for (let i=0; i < puddles.length; i++) { %>
-            <div class="profilePuddles">
-                <h2><%= puddles[i].puddleText %></h2>
-                <img src="<%= puddles[i].puddleImagePath %>" alt="<%= puddles[i].puddleImagePath %>">
-                <p>Posted on: <span id="timeStamp"><%= puddles[i].timeStamp %></span></p>
+            <div class="puddleView">
+                <div class="puddleUser">
+                    <img src="<%= puddles[i].profilePicturePath %>" alt="<%= puddles[i].profilePicturePath %>">
+                    <p><%= puddles[i].username %></p>
+                </div>
+                <div class="puddle">
+                    <div class="puddleText">
+                        <%= puddles[i].puddleText %>
+                    </div>
+                    <div class="puddleImage">
+                        <img src="<%= puddles[i].puddleImagePath %>" alt="<%= puddles[i].puddleImagePath %>">
+                    </div>
+                    <div class="puddleDate">
+                        <p>Posted on: <span id="timeStamp"><%= puddles[i].timeStamp %></span></p>
+                    </div>
+                </div>
+                <div class="puddleOptions">
+                    <div class="like">
+                        <input type="submit" value="Like">
+                    </div>
+                    <div class="comment">
+                        <input type="submit" value="Comment">
+                    </div>
+                </div>
             </div>
         <% } %>
     <% } %>

@@ -5,19 +5,55 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/home.css" rel="stylesheet">
     <script src="/js/script.js"></script>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <%- include('partials/nav.ejs') %>
 
-    <h1>Hello <%= user.firstName %>!</h1>
+    <h1>Welcome, <%= user.firstName %>!</h1>
 
     <div id="popUpMessage">
         <% if(typeof(message) != "undefined") {%>
             <%= message %>
         <% } %>
     </div>
+
+    <% for (let i = 0; i < foundUser.length; i++) { %>
+        <% if (foundUser[i].userId == user.userID || foundUser[i].isPublic == 1) { %>
+            <div class="puddleView">
+                <div class="puddleUser">
+                    <img src="<%= foundUser[i].profilePicturePath %>" alt="<%= foundUser.profilePicturePath %>">
+                    <p><%= foundUser[i].username %></p>
+                </div>
+                <div class="puddle">
+                    <div class="puddleText">
+                        <%= foundUser[i].puddleText %>
+                    </div>
+                    <div class="puddleImage">
+                        <img src="<%= foundUser[i].puddleImagePath %>" alt="<%= foundUser[i].puddleImagePath %>">
+                    </div>
+                    <div class="puddleDate">
+                        <p>Posted on: <span id="timeStamp"><%= foundUser[i].timeStamp %></span></p>
+                    </div>
+                </div>
+                <div class="puddleOptions">
+                    <div class="like">
+                        <input type="submit" value="Like">
+                    </div>
+                    <div class="comment">
+                        <input type="submit" value="Comment">
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    <% } %>
+
 </body>
 </html>
